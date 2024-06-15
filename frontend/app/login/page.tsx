@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function RegisterComponent() {
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     email: "",
     password: "",
   });
@@ -11,7 +11,7 @@ export default function RegisterComponent() {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: any) => {
@@ -24,8 +24,8 @@ export default function RegisterComponent() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
+          email: form.email,
+          password: form.password,
         }),
       });
 
@@ -33,11 +33,13 @@ export default function RegisterComponent() {
         const data = await response.json();
         console.log(data)
         localStorage.setItem("token", data.accessToken);
-        setFormData({
+        localStorage.setItem("userId", data.user._id);
+        localStorage.setItem("username", data.user.username);
+        setForm({
           email: "",
           password: "",
         });
-        console.log(router.push('/chats/666a0968ed835c0f5d5fc685'))
+        console.log(router.push('/chats/666bcb7166540f92a983d788'))
       } else {
         const error = await response.json();
         alert(`Registration failed: ${error.message}`);
@@ -52,18 +54,18 @@ export default function RegisterComponent() {
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md space-y-8 bg-white px-5 py-5 rounded-xl">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Register for an account</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Login to your account</h2>
           <p className="mt-2 text-sm text-gray-500">
-            Already have an account?{" "}
-            <a href="#" className="font-medium text-gray-900 hover:underline">
-              Sign in
+            Dont have an account 
+            <a href="" className="ml-2 underline text-gray-900 hover:underline">
+              Sign up
             </a>
           </p>
         </div>
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email address
+              Email
             </label>
             <div className="mt-1">
               <input
@@ -72,9 +74,9 @@ export default function RegisterComponent() {
                 type="text"
                 autoComplete="email"
                 required
-                value={formData.email}
+                value={form.email}
                 onChange={handleChange}
-                placeholder="name@example.com"
+                placeholder="just@email.com"
                 className="block w-full text-black appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900"
               />
             </div>
@@ -90,7 +92,7 @@ export default function RegisterComponent() {
                 type="password"
                 autoComplete="new-password"
                 required
-                value={formData.password}
+                value={form.password}
                 onChange={handleChange}
                 placeholder="Password"
                 className="block w-full text-black appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900"// This will make password dots black

@@ -31,8 +31,8 @@ class ChatService {
     });
   }
 
-  async createChat(participants: mongoose.Types.ObjectId[]) {
-    const chat = await chatModel.create({ participants });
+  async createChat(participants: mongoose.Types.ObjectId[], usernames: mongoose.Types.ObjectId[]) {
+    const chat = await chatModel.create({ participants, usernames });
     return chat;
   }
 }

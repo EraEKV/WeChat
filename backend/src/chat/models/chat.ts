@@ -2,12 +2,19 @@ import mongoose from "mongoose";
 
 export interface IChat {
   participants: mongoose.Types.ObjectId[];
+  usernames: mongoose.Types.ObjectId[];
   lastMessage?: mongoose.Types.ObjectId;
 }
 
 export interface ChatModel extends IChat, mongoose.Document {}
 const chatSchema = new mongoose.Schema({
   participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  usernames: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
